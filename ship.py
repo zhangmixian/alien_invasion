@@ -13,4 +13,5 @@ class Ship():
         self.rect.bottom = self.screen_rect.bottom
 
     def blitme(self):
+
         self.screen.blit(self.image, self.rect)
