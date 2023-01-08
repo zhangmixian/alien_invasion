@@ -15,7 +15,7 @@ def run_game():
     ai_settings.bg_color = (230, 230, 230)
 
     while True:
-        game_functions.check_event()
+        game_functions.check_event(ai_ship)
         game_functions.update_screen(screen, ai_settings, ai_ship)
 
 
