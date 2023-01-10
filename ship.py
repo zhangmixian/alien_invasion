@@ -2,7 +2,7 @@ import pygame.image
 
 
 class Ship():
-    def __init__(self, screen, ai_setting):
+    def __init__(self, screen, ai_settings):
         self.screen = screen
 
         self.image = pygame.image.load("images/ship.bmp")
@@ -16,7 +16,7 @@ class Ship():
         self.moving_left = False
 
         # self.center = float(self.rect.centerx)
-        self.speed_setting = ai_setting.ship_speed
+        self.speed_setting = ai_settings.ship_speed
 
         self.right_limit = True
         self.left_limit = True
