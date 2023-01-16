@@ -12,19 +12,28 @@ def get_number(ai_settings, alien_width):
     return numberx
 
 
-def creat_alien(ai_settings, screen, aliens, alien_number):
+def get_number_rows(ai_settings, ship_height, alien_height):
+    available_space_y = ai_settings.screen_height - 3 * alien_height - ship_height
+    number_rows = int(available_space_y / (2 * alien_height))
+    return number_rows
+
+
+def creat_alien(ai_settings, screen, aliens, alien_number, number_rows):
     alien = Alien(ai_settings, screen)
     alien_width = alien.rect.width
-    alien.x = alien_width + 2 * alien_width *alien_number
+    alien.x = alien_width + 2 * alien_width * alien_number
+    alien.rect.y = alien.rect.height + 2 * number_rows * alien.rect.height
     alien.rect.x = alien.x
     aliens.add(alien)
 
 
-def creat_fleet(ai_settings, screen, aliens):
+def creat_fleet(ai_settings, screen, ship, aliens):
     alien = Alien(ai_settings, screen)
     numberx = get_number(ai_settings, alien.rect.width)
-    for alien_number in range(numberx):
-        creat_alien(ai_settings, screen, aliens, alien_number)
+    number_rows = get_number_rows(ai_settings, ship.rect.height, alien.rect.height)
+    for rows in range(number_rows):
+        for alien_number in range(numberx):
+            creat_alien(ai_settings, screen, aliens, alien_number, rows)
 
 
 def fire_bullet(ai_ship, bullets, ai_settings, screen):
@@ -66,6 +75,11 @@ def update_screen(screen, ai_settings, ai_ship, bullets, aliens):
 
     ai_ship.blitme()
     aliens.draw(screen)
+    # for alien in aliens.sprites():
+    #     alien.blitme()
+
+    # for alien in aliens.sprites():
+    #     screen.blit()
 
     for bullet in bullets.sprites():
         bullet.draw_bullet()
@@ -78,3 +92,21 @@ def update_bullets(bullets):
     for bullet in bullets:
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
+
+
+def update_aliens(aliens):
+    check_fleet_edge(aliens)
+    aliens.update()
+
+
+def check_fleet_edge(aliens):
+    for alien in aliens:
+        if alien.check_edge():
+            # change_fleet_direction(aliens,alien.settings)
+            alien.rect.y += alien.settings.alien_drop_speed
+            alien.settings.fleet_direction *= -1
+
+# def change_fleet_direction(aliens,settings):
+#     for alien in aliens.sprites():
+#         alien.rect.y += alien.settings.alien_drop_speed
+#     settings.fleet_direction *= -1
